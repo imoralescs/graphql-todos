@@ -128,7 +128,7 @@ const resolvers = {
 }
 
 const options = {
-    port: 4000,
+    port: 7000,
     endpoint: '/graphql'
 };
 
