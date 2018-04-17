@@ -6,16 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./service/index.js",
-    "client": "webpack --watch"
+    "build": "webpack --watch",
+    "serve": "webpack-dev-server --open",
+    "develop": "concurrently \"nodemon ./service/index.js\" \"webpack-dev-server --open\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-client-preset": "^1.0.8",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",
     "graphql-yoga": "^1.8.5",
+    "html-webpack-plugin": "^3.2.0",
     "react": "^16.3.2",
     "react-apollo": "^2.1.3",
     "react-dom": "^16.3.2",
@@ -25,6 +31,8 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "concurrently": "^3.5.1",
     "css-loader": "^0.28.11",
     "extract-loader": "^2.0.1",
     "extract-text-webpack-plugin": "^3.0.2",

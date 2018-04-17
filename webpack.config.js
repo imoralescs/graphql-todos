@@ -1,13 +1,16 @@
 const path = require('path');
+const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const MODE = 'development';
-const enabledSourceMap = (MODE === 'development');
+const port = process.env.PORT || 3000;
+const mode = 'development';
+const enabledSourceMap = (mode === 'development');
 
 module.exports = {
-    mode: MODE,
+    mode: mode,
     entry: {
-        bundle: './client/src/index.js'
+        bundle: ['babel-polyfill', './client/src/index.js']
     },
     output: {
         path: path.resolve(__dirname, './client/public/assets'),
@@ -44,6 +47,20 @@ module.exports = {
         ]
     },
     plugins: [
-        //new ExtractTextPlugin('main.css')
-    ]
+        // Export CSS
+        //new ExtractTextPlugin('main.css'),
+        new HtmlWebpackPlugin({
+            template: 'client/public/index.html',
+            favicon: 'client/public/favicon.ico'
+        }),
+        new webpack.HotModuleReplacementPlugin()
+    ],
+    devServer: {
+        host: 'localhost',
+        port: port,
+        historyApiFallback: true,
+        open: true,
+        hot:true,
+        proxy: {'/graphql': `http://localhost:7000`},
+    }
 }
