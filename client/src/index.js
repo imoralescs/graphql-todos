@@ -9,7 +9,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import App from './components/App';
+import App from './containers/App';
 
 const httpLink = new HttpLink({url: '/graphql'});
 

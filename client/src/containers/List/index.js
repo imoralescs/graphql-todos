@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import Form from '../Form';
 
 class List extends Component {
     render() {
@@ -19,7 +18,6 @@ class List extends Component {
         return(
             <div>
                 <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
-                <Form/>
             </div>
         )
     }
