@@ -2,9 +2,29 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import styled from 'styled-components';
 import Form from '../../components/Form';
 
+/* Component Styling */
+const HeaderContainer = styled.header`
+    position: relative;
+    margin-bottom: 4px;
+`;
+
+const HeaderTitle = styled.div`
+    height: 60px;
+    background: #5f98cd;
+    display: block;
+    text-align: center;
+    line-height: 60px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+    margin-bottom: 2px;
+`;
+
+/* Component */
 class Header extends Component {
     state = {
         content:''
@@ -37,13 +57,13 @@ class Header extends Component {
             { content } = this.state,
             { _onChange, _createTodo } = this;        
         return(
-            <header className="header">
-                <span className="header__title">Todo App</span>
+            <HeaderContainer>
+                <HeaderTitle>Todo App</HeaderTitle>
                 <Form 
                     content={content} 
                     onChange={_onChange} 
                     createTodo={_createTodo}/>
-            </header>
+            </HeaderContainer>
         )
     }
 }

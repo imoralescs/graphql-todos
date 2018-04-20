@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import styled from 'styled-components';
+import Todo from '../../components/Todo';
 
+/* Component Styling */
+const ListContainer = styled.ul`
+    flex: 1 auto;
+`;
+
+/* Component */
 class List extends Component {
     render() {
-        const { props } = this;
+        console.log(this.props)
+        const { props, _editTodo, _deleteTodo } = this;
         if(props.data && props.data.loading) {
             return(<div>Loading</div>);
         }
@@ -14,15 +23,20 @@ class List extends Component {
             return(<div>Error</div>);
         }
         
-        const todos = props.data.allTodos;        
+        const todos = /*props.data.allTodos*/ [];        
         return(
-            <div>
-                <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
-            </div>
+            <ListContainer>
+                {todos.map(todo => 
+                    <Todo 
+                        key={todo.id}
+                        {...todo} />)}
+            </ListContainer>
         )
     }
 }
 
+/* Without Link State */
+/*
 const FEED_QUERY = gql`
     query{
         allTodos{
@@ -34,3 +48,31 @@ const FEED_QUERY = gql`
 `;
 
 export default graphql(FEED_QUERY)(List);
+*/
+
+const FEED_QUERY_SERVER = gql`
+    query Todos{
+        allTodos{
+            id
+            content
+            isCompleted
+        }
+    }
+`;
+
+// Query from the client not for Graphql Server
+const FEED_QUERY_CLIENT = gql`
+    query {
+        todos @client {
+            todosList
+        }
+    }
+`;
+
+export default compose(
+    graphql(FEED_QUERY_CLIENT, {
+        props: ({ data: { todosList } }) => ({
+            todosList
+        })
+    })
+)(List);
