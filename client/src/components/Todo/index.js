@@ -130,7 +130,7 @@ const PUT_QUERY = gql`
             content
             isCompleted
         }
-        editTodo(id: $id, content: $content, isCompleted: $isCompleted) @client
+        updateTodoCache(id: $id, content: $content, isCompleted: $isCompleted) @client
     }
 `;
 

@@ -23,30 +23,37 @@ const defaultState = {
 const stateLink = withClientState({
     cache: new InMemoryCache(),
     resolvers: {
+        Query: {
+            queryFromResolve: (_, args, {cache}) => {
+                console.log('Load query');
+                return null;
+            }
+        },
         Mutation: {
-            editTodo: (_, args, {cache}) => {
+            updateTodoCache: (_, args, {cache}) => {
                 console.log(args);
                 console.log(cache);
                 return null;
             },
-            deleteTodoCache: (_, args, {cache}) => {
-                console.log(args);
-                console.log(cache);
-                
-                const query = gql`
+            deleteTodoCache: (_, args, {cache}) => {                
+                const
+                    query = gql`
                     {
                         allTodos {
                             id
                             content
                             isCompleted
                         }
-                    }
-                `;
-                const previous = cache.readQuery({query});
-                const { allTodos } = previous;
-                console.log(allTodos);
-                const earlier = allTodos.filter(todo => todo.id !== args.id);
-                console.log(earlier);
+                    }`
+                const 
+                    previous = cache.readQuery({query});
+                
+                const 
+                    { allTodos } = previous,
+                    earlier = allTodos.filter(todo => todo.id !== args.id),
+                    data = Object.assign({}, ...previous, {allTodos : earlier});
+                
+                cache.writeData({data});
                 return null;
             }
         }

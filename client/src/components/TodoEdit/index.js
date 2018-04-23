@@ -43,6 +43,7 @@ const TodoEditButton = styled.button`
     line-height: 1.9;
 `;
 
+/* Component */
 const TodoEdit = ({ _showTodoEdit, _editTodo, _onChange, id, content, isCompleted }) => {  
     return(
         <TodoEditContainer>

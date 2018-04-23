@@ -56,6 +56,7 @@ const FEED_QUERY_CLIENT = gql`
         visibilityFilter @client {
             filter
         }
+        queryFromResolve @client
         allTodos{
             id
             content
