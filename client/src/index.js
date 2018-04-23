@@ -14,12 +14,43 @@ import { withClientState } from 'apollo-link-state';
 import App from './containers/App';
 
 const defaultState = {
-    todos: [],
-    visibilityFilter: 'SHOW_ALL'
-}
+    visibilityFilter: {
+        filter: 'SHOW_ALL',
+        __typename: 'VisibilityFilter'
+    }
+} 
 
 const stateLink = withClientState({
     cache: new InMemoryCache(),
+    resolvers: {
+        Mutation: {
+            editTodo: (_, args, {cache}) => {
+                console.log(args);
+                console.log(cache);
+                return null;
+            },
+            deleteTodoCache: (_, args, {cache}) => {
+                console.log(args);
+                console.log(cache);
+                
+                const query = gql`
+                    {
+                        allTodos {
+                            id
+                            content
+                            isCompleted
+                        }
+                    }
+                `;
+                const previous = cache.readQuery({query});
+                const { allTodos } = previous;
+                console.log(allTodos);
+                const earlier = allTodos.filter(todo => todo.id !== args.id);
+                console.log(earlier);
+                return null;
+            }
+        }
+    },
     defaults: defaultState
 });
 

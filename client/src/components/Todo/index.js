@@ -130,6 +130,7 @@ const PUT_QUERY = gql`
             content
             isCompleted
         }
+        editTodo(id: $id, content: $content, isCompleted: $isCompleted) @client
     }
 `;
 
@@ -140,6 +141,7 @@ const DELETE_QUERY = gql`
             content
             isCompleted
         }
+        deleteTodoCache(id: $id) @client
     }
 `;
 

@@ -23,7 +23,7 @@ class List extends Component {
             return(<div>Error</div>);
         }
         
-        const todos = /*props.data.allTodos*/ [];        
+        const todos = props.data.allTodos;        
         return(
             <ListContainer>
                 {todos.map(todo => 
@@ -50,8 +50,12 @@ const FEED_QUERY = gql`
 export default graphql(FEED_QUERY)(List);
 */
 
-const FEED_QUERY_SERVER = gql`
-    query Todos{
+// Query from the client state and data from Graphql Server
+const FEED_QUERY_CLIENT = gql`
+    query {
+        visibilityFilter @client {
+            filter
+        }
         allTodos{
             id
             content
@@ -60,19 +64,4 @@ const FEED_QUERY_SERVER = gql`
     }
 `;
 
-// Query from the client not for Graphql Server
-const FEED_QUERY_CLIENT = gql`
-    query {
-        todos @client {
-            todosList
-        }
-    }
-`;
-
-export default compose(
-    graphql(FEED_QUERY_CLIENT, {
-        props: ({ data: { todosList } }) => ({
-            todosList
-        })
-    })
-)(List);
+export default graphql(FEED_QUERY_CLIENT)(List);
