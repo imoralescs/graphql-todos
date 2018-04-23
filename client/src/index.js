@@ -11,6 +11,8 @@ import gql from 'graphql-tag';
 import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state';
 
+import { log, dir } from './utils/console';
+
 import App from './containers/App';
 
 const defaultState = {
@@ -25,14 +27,14 @@ const stateLink = withClientState({
     resolvers: {
         Query: {
             queryFromResolve: (_, args, {cache}) => {
-                console.log('Load query');
+                log('Load query');
                 return null;
             }
         },
         Mutation: {
             updateTodoCache: (_, args, {cache}) => {
-                console.log(args);
-                console.log(cache);
+                log(args);
+                log(cache);
                 return null;
             },
             deleteTodoCache: (_, args, {cache}) => {                
