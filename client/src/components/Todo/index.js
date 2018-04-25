@@ -56,7 +56,8 @@ class Todo extends Component {
     }
 
     _editTodo = (id, content, isCompleted) => {
-        this.props.editTodo({
+        console.log(id, content, isCompleted)
+        this.props.updateTodo({
             variables: { 
                 id, 
                 content, 
@@ -124,13 +125,12 @@ class Todo extends Component {
 }
 
 const PUT_QUERY = gql`
-    mutation editTodo($id: ID!, $content: String!, $isCompleted: Boolean!) {
+    mutation updateTodo($id: ID!, $content: String!, $isCompleted: Boolean!) {
         updateTodo(id: $id, content: $content, isCompleted: $isCompleted){
             id
             content
             isCompleted
         }
-        updateTodoCache(id: $id, content: $content, isCompleted: $isCompleted) @client
     }
 `;
 
@@ -146,7 +146,7 @@ const DELETE_QUERY = gql`
 `;
 
 export default compose(
-    graphql(PUT_QUERY, { name: 'editTodo'}),
+    graphql(PUT_QUERY, { name: 'updateTodo'}),
     graphql(DELETE_QUERY, { name: 'deleteTodo'})
 )(Todo);
 

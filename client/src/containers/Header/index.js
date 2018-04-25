@@ -30,11 +30,28 @@ class Header extends Component {
         content:''
     };
 
-    _createTodo = async (event) => {
+    _createTodo = (event) => {
         const { content } = this.state;
         event.preventDefault();
         
-        await this.props.createTodo({
+        this.props.createTodo({
+            refetchQueries: [{
+                query: gql`
+                    query {
+                        allTodos{
+                            id
+                            content
+                            isCompleted
+                        }
+                    }
+                `
+            }],
+            updateQueries: {
+                Todo: (prev, { mutationResult }) => {
+                    console.log(prev);
+                    console.log(mutationResult);
+                }
+            },
             variables: {
                 content,
                 isCompleted: false
