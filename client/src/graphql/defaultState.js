@@ -3,6 +3,9 @@ export default {
     appState: {
         __typename: 'AppState',
         currentScreen: 'none',
-        todos: []
+        visibilityFilter: {
+            filter: 'SHOW_ALL',
+            __typename: 'VisibilityFilter'
+        }
     }
 }

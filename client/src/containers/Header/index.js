@@ -35,37 +35,26 @@ class Header extends Component {
         event.preventDefault();
         
         this.props.createTodo({
-            /*refetchQueries: [{
-                query: gql`
-                    query {
-                        allTodos{
-                            id
-                            content
-                            isCompleted
-                        }
-                    }
-                `
-            }],*/
             variables: {
                 content,
                 isCompleted: false
             },
+            // Update client cache data
             update: (store, { data: { createTodo }}) => {
-                const q = gql`
-                    query {
-                        allTodos{
-                            id
-                            content
-                            isCompleted
+                const 
+                    query = gql`
+                        query {
+                            allTodos{
+                                id
+                                content
+                                isCompleted
+                            }
                         }
-                    }
-                `;
-                const data = store.readQuery({ query: q });
-                console.log(data);
+                    `;
+                const 
+                    data = store.readQuery({ query });
                 data.allTodos.push(createTodo);
-                console.log(data);
-                store.writeQuery({ query: q, data });
-
+                store.writeQuery({ query , data });
             }
         });
 

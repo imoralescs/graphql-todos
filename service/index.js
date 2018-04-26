@@ -88,17 +88,21 @@ const resolvers = {
   },
   Mutation: {
     createTodo: (_, { content, isCompleted }) => {
+      let id = count++;
+
       const newTodo = {
-        id: count++,
+        id: id.toString(),
         content,
         isCompleted
       }
+      
       todos = [...todos, newTodo];
+      
       return newTodo;
     },
     updateTodo: (_, { id, content, isCompleted }) => {
       let updatedTodo;
-
+      
       todos = todos.map(todo => {
         if (todo.id === id) {
           updatedTodo = {
@@ -108,7 +112,8 @@ const resolvers = {
             isCompleted: isCompleted !== undefined ? isCompleted : todo.isCompleted
           }
           return updatedTodo;
-        } else {
+        } 
+        else {
           return todo
         }
       });

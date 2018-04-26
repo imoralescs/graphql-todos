@@ -56,12 +56,11 @@ class Todo extends Component {
     }
 
     _editTodo = (id, content, isCompleted) => {
-        console.log(id, content, isCompleted)
         this.props.updateTodo({
             variables: { 
                 id, 
                 content, 
-                isCompleted 
+                isCompleted
             }
         });
         this.setState({ 
@@ -71,7 +70,29 @@ class Todo extends Component {
 
     _deleteTodo = (id) => {
         this.props.deleteTodo({
-            variables: { id }
+            variables: { 
+                id 
+            },
+            // Update client cache data
+            update: (store, { data: { deleteTodo }}) => {
+                const 
+                    query = gql`
+                        query {
+                            allTodos{
+                                id
+                                content
+                                isCompleted
+                            }
+                        }
+                    `;
+                const 
+                    previous = store.readQuery({ query });
+                const
+                    { allTodos } = previous,
+                    earlier = allTodos.filter(todo => todo.id !== deleteTodo.id),
+                    data = Object.assign({}, ...previous, {allTodos : earlier});
+                store.writeQuery({ query , data });
+            }
         });
     }
 

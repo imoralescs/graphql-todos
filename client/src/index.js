@@ -102,7 +102,7 @@ import defaults from './graphql/defaultState';
 import resolvers from './graphql/resolvers';
 
 const cache = new InMemoryCache({
-    dataIdFromObject: object => object.key
+    dataIdFromObject: object => object.key || null
 });
 
 const stateLink = withClientState({
