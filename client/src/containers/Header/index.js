@@ -35,7 +35,7 @@ class Header extends Component {
         event.preventDefault();
         
         this.props.createTodo({
-            refetchQueries: [{
+            /*refetchQueries: [{
                 query: gql`
                     query {
                         allTodos{
@@ -45,16 +45,27 @@ class Header extends Component {
                         }
                     }
                 `
-            }],
-            updateQueries: {
-                Todo: (prev, { mutationResult }) => {
-                    console.log(prev);
-                    console.log(mutationResult);
-                }
-            },
+            }],*/
             variables: {
                 content,
                 isCompleted: false
+            },
+            update: (store, { data: { createTodo }}) => {
+                const q = gql`
+                    query {
+                        allTodos{
+                            id
+                            content
+                            isCompleted
+                        }
+                    }
+                `;
+                const data = store.readQuery({ query: q });
+                console.log(data);
+                data.allTodos.push(createTodo);
+                console.log(data);
+                store.writeQuery({ query: q, data });
+
             }
         });
 
