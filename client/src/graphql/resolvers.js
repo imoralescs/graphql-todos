@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { log, dir } from '../utils/console';
 
 /** 
  * How mutation work on resolver:
@@ -12,6 +13,12 @@ import { Query } from 'react-apollo';
  */
 
 export default {
+    Query: {
+        queryFromResolve: (_, args, { cache }) => {
+            log('Load query');
+            return null;
+        }
+    },
     Mutation: {
         // 1 and 2
         setAppState: (_, { index, value }, { cache }) => {
@@ -36,28 +43,6 @@ export default {
             };
 
             // 6
-            cache.writeData({ query, data });
-
-            return null;
-        },
-        setTodoState: (_, { index, value }, { cache }) => {
-            const query = gql`
-                query {
-                    appState @client {
-                        todos
-                    }
-                }
-            `;
-
-            const previousState = cache.readQuery({ query });
-
-            const data = {
-                appState: {
-                    ...previousState.appState,
-                    [index]: value
-                }
-            };
-
             cache.writeData({ query, data });
 
             return null;

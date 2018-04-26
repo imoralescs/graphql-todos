@@ -3,7 +3,13 @@ import ReactDOM from 'react-dom';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
-import Form from '../../components/Form';
+import TodoCreate from '../../components/TodoCreate';
+import { 
+    TODO_QUERY_SERVER 
+} from '../../graphql/queries';
+import { 
+    POST_TODO_MUTATION 
+} from '../../graphql/mutations';
 
 /* Component Styling */
 const HeaderContainer = styled.header`
@@ -42,15 +48,7 @@ class Header extends Component {
             // Update client cache data
             update: (store, { data: { createTodo }}) => {
                 const 
-                    query = gql`
-                        query {
-                            allTodos{
-                                id
-                                content
-                                isCompleted
-                            }
-                        }
-                    `;
+                    query = TODO_QUERY_SERVER;
                 const 
                     data = store.readQuery({ query });
                 data.allTodos.push(createTodo);
@@ -76,7 +74,7 @@ class Header extends Component {
         return(
             <HeaderContainer>
                 <HeaderTitle>Todo App</HeaderTitle>
-                <Form 
+                <TodoCreate 
                     content={content} 
                     onChange={_onChange} 
                     createTodo={_createTodo}/>
@@ -85,14 +83,4 @@ class Header extends Component {
     }
 }
 
-const POST_QUERY = gql`
-    mutation createTodo($content: String!, $isCompleted: Boolean!) {
-        createTodo(content: $content, isCompleted: $isCompleted){
-            id
-            content
-            isCompleted
-        }
-    }
-`;
-
-export default graphql(POST_QUERY, { name: 'createTodo'})(Header);
+export default graphql(POST_TODO_MUTATION, { name: 'createTodo'})(Header);

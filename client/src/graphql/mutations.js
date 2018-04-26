@@ -8,3 +8,33 @@ export const SET_APP_STATE = gql`
         }
     }
 `;
+
+export const POST_TODO_MUTATION = gql`
+    mutation createTodo($content: String!, $isCompleted: Boolean!) {
+        createTodo(content: $content, isCompleted: $isCompleted){
+            id
+            content
+            isCompleted
+        }
+    }
+`;
+
+export const PUT_TODO_MUTATION = gql`
+    mutation updateTodo($id: ID!, $content: String!, $isCompleted: Boolean!) {
+        updateTodo(id: $id, content: $content, isCompleted: $isCompleted){
+            id
+            content
+            isCompleted
+        }
+    }
+`;
+
+export const DELETE_TODO_MUTATION = gql`
+    mutation deleteTodo($id: ID!) {
+        deleteTodo(id: $id){
+            id
+            content
+            isCompleted
+        }
+    }
+`;

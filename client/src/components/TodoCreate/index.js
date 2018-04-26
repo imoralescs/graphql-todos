@@ -40,7 +40,7 @@ const HeaderFormButton = styled.button`
 `;
 
 /* Component */
-export default class Form extends Component {
+export default class TodoCreate extends Component {
     render() {   
         const { content, onChange, createTodo } = this.props;    
         return(

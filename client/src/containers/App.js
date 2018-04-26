@@ -4,11 +4,15 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import Header from './Header';
 import List from './List';
-
-import { APP_STATE } from '../graphql/queries';
-import { SET_APP_STATE } from '../graphql/mutations';
-
-import { globalStyling } from './globalStyling.js';
+import { 
+    APP_STATE 
+} from '../graphql/queries';
+import { 
+    SET_APP_STATE 
+} from '../graphql/mutations';
+import { 
+    globalStyling 
+} from '../styling/globalStyling.js';
 
 globalStyling();
 /*
@@ -34,7 +38,6 @@ class App extends Component {
     };
 
     render() {
-        console.log(this.props) 
         return(
             <div>
                 <Header />

@@ -4,6 +4,10 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import styled from 'styled-components';
 import Todo from '../../components/Todo';
+import { 
+    TODO_QUERY_SERVER, 
+    TODO_QUERY_SERVER_AND_CLIENT 
+} from '../../graphql/queries';
 
 /* Component Styling */
 const ListContainer = styled.ul`
@@ -13,14 +17,13 @@ const ListContainer = styled.ul`
 /* Component */
 class List extends Component {
     render() {
-        console.log(this.props)
         const { props, _editTodo, _deleteTodo } = this;
-        const { allTodos } = props;
+        const { allTodos, loading, error } = props;
 
-        if(props.loading) {
+        if(loading) {
             return(<div>Loading</div>);
         }
-        if(props.error) {
+        if(error) {
             return(<div>Error</div>);
         }
               
@@ -36,90 +39,16 @@ class List extends Component {
 }
 
 /* Without Link State */
-/*
-const FEED_QUERY = gql`
-    query{
-        allTodos{
-            id
-            content
-            isCompleted
-        }
-    }
-`;
+// export default graphql(TODO_QUERY_SERVER)(List);
 
-export default graphql(FEED_QUERY)(List);
-*/
 
-// Query from the client state and data from Graphql Server
-/*
-const FEED_QUERY_CLIENT = gql`
-    query {
-        visibilityFilter @client {
-            filter
-        }
-        queryFromResolve @client
-        allTodos{
-            id
-            content
-            isCompleted
-        }
-    }
-`;
-*/
-
-const TODO_QUERY_SERVER = gql`
-    query {
-        allTodos{
-            id
-            content
-            isCompleted
-        }
-    }
-`;
-
-const TODO_QUERY_CLIENT = gql`
-    query {
-        appState @client {
-            todos
-        }
-        queryFromResolve @client
-    }
-`;
-
-const TODO_SET_CLIENT = gql`
-    mutation SetTodoState($index: String!, $value: String!) {
-        setTodoState(index: $index, value: $value) @client {
-            todos
-        }
-    }
-`;
-/*
+/* Query from the client state and data from Graphql Server */
 export default compose(
-    graphql(TODO_QUERY_SERVER, {
+    graphql(TODO_QUERY_SERVER_AND_CLIENT, {
         props: ({ data: { loading, error, networkStatus, allTodos } }) => {
             if(loading) { return { loading }; }
             if(error) { return { error }; }
-            return { loading, networkStatus, allTodos };
-        }
-    }),
-    graphql(TODO_QUERY_CLIENT, {
-        props: ({ data: { loading, error, networkStatus, appState } }) => {
-            if(loading) { return { loading }; }
-            if(error) { return { error }; }
-            console.log(this)
-            return { loading, networkStatus, appState };
-        }
-    }),
-    graphql(TODO_SET_CLIENT, { name: 'setTodoState' }),
-)(List);
-*/
-
-export default compose(
-    graphql(TODO_QUERY_SERVER, {
-        props: ({ data: { loading, error, networkStatus, allTodos } }) => {
-            if(loading) { return { loading }; }
-            if(error) { return { error }; }
-            return { loading, networkStatus, allTodos };
+            return { loading, error, networkStatus, allTodos };
         }
     })
 )(List);

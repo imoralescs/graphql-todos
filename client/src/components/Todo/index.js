@@ -3,6 +3,13 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import TodoEdit from '../TodoEdit';
 import styled from 'styled-components';
+import { 
+    TODO_QUERY_SERVER 
+} from '../../graphql/queries';
+import { 
+    PUT_TODO_MUTATION, 
+    DELETE_TODO_MUTATION 
+} from '../../graphql/mutations';
 
 /* Component Styling */
 const TodoItem = styled.li`
@@ -76,15 +83,7 @@ class Todo extends Component {
             // Update client cache data
             update: (store, { data: { deleteTodo }}) => {
                 const 
-                    query = gql`
-                        query {
-                            allTodos{
-                                id
-                                content
-                                isCompleted
-                            }
-                        }
-                    `;
+                    query = TODO_QUERY_SERVER;
                 const 
                     previous = store.readQuery({ query });
                 const
@@ -145,30 +144,9 @@ class Todo extends Component {
     }
 }
 
-const PUT_QUERY = gql`
-    mutation updateTodo($id: ID!, $content: String!, $isCompleted: Boolean!) {
-        updateTodo(id: $id, content: $content, isCompleted: $isCompleted){
-            id
-            content
-            isCompleted
-        }
-    }
-`;
-
-const DELETE_QUERY = gql`
-    mutation deleteTodo($id: ID!) {
-        deleteTodo(id: $id){
-            id
-            content
-            isCompleted
-        }
-        deleteTodoCache(id: $id) @client
-    }
-`;
-
 export default compose(
-    graphql(PUT_QUERY, { name: 'updateTodo'}),
-    graphql(DELETE_QUERY, { name: 'deleteTodo'})
+    graphql(PUT_TODO_MUTATION, { name: 'updateTodo'}),
+    graphql(DELETE_TODO_MUTATION, { name: 'deleteTodo'})
 )(Todo);
 
 
